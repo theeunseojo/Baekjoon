@@ -14,17 +14,13 @@ class Solution {
             mh.add(scoville[i]);
         }
         
-    
+        int fir = mh.remove();
         
-        while(!(mh.peek() >= K)){
-             if(mh.size() < 2) return -1;
-            
-            int fir = mh.remove();
+        
+        while(!(fir >= K)){
             int sec = mh.remove();
+            if(fir == 0 && sec == 0) return -1;
             fir += sec * 2;
-            mh.add(fir);
-            
-           
             answer += 1;
         }
         return answer;

@@ -1,37 +1,50 @@
-#include <iostream>
-#include <string>
-#include <stack>
-#define MAX 101
+#include <bits/stdc++.h>
+
 using namespace std;
 
-int main(){
-   int n;
-   cin >> n;
-   int cnt = 0;
+int N;
+stack<char> st;
+int cnt;
+bool isGood(string temp){
+    
+    for(int i = 0; i < temp.length(); i++){
+        
 
-   string str[MAX];
-   
-   for(int i = 0 ; i < n; i++){
-      cin >> str[i];
-   }
+        if(st.empty() || st.top() != temp[i]){
+            //cout << "push : " << temp[i] << endl;
+            st.push(temp[i]);
+        }
+        else if(!st.empty() && st.top() == temp[i]){
+            // cout << "pop : " << st.top() << endl;
+            st.pop();
+        }
+    }
+    
+    if(st.empty()) return true;
+    else return false;
+}
 
-   for(int i = 0 ; i < n; i++){
-      stack<char> st;
-      for(int j = 0; j < str[i].length(); j++){
-         char ch = str[i][j];
-         // 스택이 비어있는 초기상황이거나 유사한 경우(스택이 앞에서 짝 지어졌을때), push.
-         if(st.empty()) st.push(ch);
-         // 초기상황이 아닌 경우.
-         else{
-            //ch != top인 경우, push
-            if(ch != st.top()) st.push(ch);
-            // 같을 경우, pop 시킨다.
-            else st.pop();
-         }
-      }
-      // 단어를 검사했는데, 스택이 비어 있는 경우 좋은 단어이므로 카운팅해준다. 
-      if(st.empty()) cnt++;
-   }
-   cout << cnt;
-   return 0;
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
+    cin >> N;
+
+    for(int i = 0; i < N; i++){
+        string temp;
+        cin >> temp;
+
+        while(!st.empty()){
+            st.pop();
+        }
+
+        if(isGood(temp)){
+            cnt++;
+        }
+    }
+
+    cout << cnt;
+
+    return 0;
 }

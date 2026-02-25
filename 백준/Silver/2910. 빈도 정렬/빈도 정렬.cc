@@ -1,33 +1,49 @@
-#include <bits/stdc++.h>
-using namespace std;  
-typedef long long ll;
-const ll INF = 1e18;   
-int n, c, a[1004];
-vector<pair<int, int>> v; 
-map<int, int> mp, mp_first; 
-bool cmp(pair<int,int> a, pair<int, int> b){
-	if(a.first == b.first){
-		return mp_first[a.second] < mp_first[b.second];
-	}
-	return a.first > b.first;
+#include<bits/stdc++.h>
+using namespace std;
+
+int n,c;
+
+struct p{
+    int num;
+    int st;
+    int cnt;
+};
+
+bool cmp(const p & a, const p &b){
+    if(a.cnt == b.cnt) return a.st < b.st;
+    return a.cnt > b.cnt;
 }
+
+map<int,int> cnt_mp;
+map<int,int> loc_mp;
+vector<p> v;
+int arr[1001];
+
 int main(){
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL); cout.tie(NULL);
-	cin >> n >> c; 
-	for(int i = 0; i < n; i++){
-		cin >> a[i];mp[a[i]]++;
-		if(mp_first[a[i]] == 0) mp_first[a[i]] = i + 1; 
-	} 
-	for(auto it : mp){
-		v.push_back({it.second, it.first});
-	}
-	sort(v.begin(), v.end(), cmp);
-	for(auto i : v){
-		for(int j = 0; j < i.first; j++){
-			cout << i.second << " ";
-		}
-	} 
-	 
-	return 0;
+    cin.tie(NULL); cout.tie(NULL);
+    cin >> n >> c;
+
+    for(int i = 0; i < n; i++){
+
+        cin >> arr[i];
+        if(cnt_mp.find(arr[i]) == cnt_mp.end() && loc_mp.find(arr[i]) == loc_mp.end()){
+            cnt_mp[arr[i]] = 1;
+            loc_mp[arr[i]] = i;
+            continue;
+        }
+        cnt_mp[arr[i]]++; 
+    }
+
+    for(int i = 0; i < n; i++){
+        int num = arr[i];
+        v.push_back({num, loc_mp[num], cnt_mp[num]});
+    }
+
+    sort(v.begin(), v.end(), cmp);
+    
+    for(int i = 0; i < n; i++){
+        cout << v[i].num << " ";
+    }
+    return 0;
 }
+
